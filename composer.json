@@ -1,0 +1,35 @@
+{
+    "name": "mohmann/hexagonal",
+    "description": "Provides utilities to build application using hexagonal architecture",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Martin Ohmann",
+            "email": "martin@mohmann.de"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "mohmann\\Hexagonal\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "mohmann\\Hexagonal\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": "^7.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.0",
+        "spatie/phpunit-watcher": "^1.5",
+        "phpstan/phpstan": "^0.10.1",
+        "friendsofphp/php-cs-fixer": "^2.12",
+        "phpmetrics/phpmetrics": "^2.4",
+        "phake/phake": "^3.1",
+        "phpbench/phpbench": "^0.14.0",
+        "infection/infection": "^0.10.5"
+    }
+}
