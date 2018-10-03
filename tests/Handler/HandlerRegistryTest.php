@@ -11,8 +11,8 @@
 namespace mohmann\Hexagonal\Tests\Handler;
 
 use mohmann\Hexagonal\CommandInterface;
-use mohmann\Hexagonal\Exception\MissingCommandHandlerException;
 use mohmann\Hexagonal\Exception\InvalidHandlerClassException;
+use mohmann\Hexagonal\Exception\MissingCommandHandlerException;
 use mohmann\Hexagonal\Handler\HandlerRegistry;
 use mohmann\Hexagonal\HandlerInterface;
 use PHPUnit\Framework\TestCase;

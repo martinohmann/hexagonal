@@ -12,8 +12,8 @@ namespace mohmann\Hexagonal\Handler\Resolver;
 
 use mohmann\Hexagonal\Command\CommandInflector;
 use mohmann\Hexagonal\CommandInterface;
-use mohmann\Hexagonal\Exception\MissingCommandHandlerException;
 use mohmann\Hexagonal\Exception\InvalidHandlerClassException;
+use mohmann\Hexagonal\Exception\MissingCommandHandlerException;
 use mohmann\Hexagonal\Handler\HandlerResolverInterface;
 use mohmann\Hexagonal\HandlerInterface;
 use Psr\Container\ContainerInterface;

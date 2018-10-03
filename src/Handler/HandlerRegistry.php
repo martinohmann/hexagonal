@@ -11,8 +11,8 @@
 namespace mohmann\Hexagonal\Handler;
 
 use mohmann\Hexagonal\CommandInterface;
-use mohmann\Hexagonal\Exception\MissingCommandHandlerException;
 use mohmann\Hexagonal\Exception\InvalidHandlerClassException;
+use mohmann\Hexagonal\Exception\MissingCommandHandlerException;
 use mohmann\Hexagonal\HandlerInterface;
 
 class HandlerRegistry
