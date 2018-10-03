@@ -15,8 +15,6 @@ use mohmann\Hexagonal\Exception\CommandHandlerMissingException;
 use mohmann\Hexagonal\Exception\InvalidHandlerClassException;
 use mohmann\Hexagonal\Handler\HandlerRegistry;
 use mohmann\Hexagonal\HandlerInterface;
-use mohmann\Hexagonal\Tests\Command\Fixtures\Bar\BazCommand;
-use mohmann\Hexagonal\Tests\Command\Fixtures\FooCommand;
 use PHPUnit\Framework\TestCase;
 
 class HandlerRegistryTest extends TestCase
@@ -53,8 +51,8 @@ class HandlerRegistryTest extends TestCase
     public function itRegistersHandlersOnConstruct()
     {
         $input = [
-            FooCommand::class => \Phake::mock(HandlerInterface::class),
-            BazCommand::class => \Phake::mock(HandlerInterface::class),
+            'Some\Command' => \Phake::mock(HandlerInterface::class),
+            'Some\Other\Command' => \Phake::mock(HandlerInterface::class),
         ];
 
         $registry = new HandlerRegistry($input);
@@ -70,8 +68,8 @@ class HandlerRegistryTest extends TestCase
     public function itRegistersHandlers()
     {
         $input = [
-            FooCommand::class => \Phake::mock(HandlerInterface::class),
-            BazCommand::class => \Phake::mock(HandlerInterface::class),
+            'Some\Command' => \Phake::mock(HandlerInterface::class),
+            'Some\Other\Command' => \Phake::mock(HandlerInterface::class),
         ];
 
         $this->registry->registerCommandHandlers($input);
@@ -86,8 +84,10 @@ class HandlerRegistryTest extends TestCase
      */
     public function itThrowsExceptionIfOnSuitableCommandHandlerIsAvailable()
     {
+        $command = \Phake::mock(CommandInterface::class);
+
         $this->expectException(CommandHandlerMissingException::class);
-        $this->registry->getCommandHandler(new FooCommand());
+        $this->registry->getCommandHandler($command);
     }
 
     /**
@@ -96,8 +96,8 @@ class HandlerRegistryTest extends TestCase
     public function itThrowsExceptionIfHandlersHaveInvalidType()
     {
         $handlers = [
-            FooCommand::class => \Phake::mock(HandlerInterface::class),
-            BazCommand::class => 'foo bar',
+            'Some\Command' => \Phake::mock(HandlerInterface::class),
+            'Some\Other\Command' => 'foo bar',
         ];
 
         $this->expectException(InvalidHandlerClassException::class);

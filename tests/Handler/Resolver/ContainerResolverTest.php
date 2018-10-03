@@ -53,10 +53,11 @@ class ContainerResolverTest extends TestCase
     {
         $command = \Phake::mock(CommandInterface::class);
         $handler = \Phake::mock(HandlerInterface::class);
+        $commandClass = \get_class($command);
         $handlerClass = \get_class($handler);
 
         \Phake::when($this->commandInflector)
-            ->getHandlerClass($command)
+            ->getHandlerClass($commandClass)
             ->thenReturn($handlerClass);
 
         \Phake::when($this->container)
@@ -79,10 +80,11 @@ class ContainerResolverTest extends TestCase
     {
         $command = \Phake::mock(CommandInterface::class);
         $handler = \Phake::mock(HandlerInterface::class);
+        $commandClass = \get_class($command);
         $handlerClass = \get_class($handler);
 
         \Phake::when($this->commandInflector)
-            ->getHandlerClass($command)
+            ->getHandlerClass($commandClass)
             ->thenReturn($handlerClass);
 
         \Phake::when($this->container)
@@ -100,10 +102,11 @@ class ContainerResolverTest extends TestCase
     {
         $command = \Phake::mock(CommandInterface::class);
         $handler = \Phake::mock(HandlerInterface::class);
+        $commandClass = \get_class($command);
         $handlerClass = \get_class($handler);
 
         \Phake::when($this->commandInflector)
-            ->getHandlerClass($command)
+            ->getHandlerClass($commandClass)
             ->thenReturn($handlerClass);
 
         \Phake::when($this->container)

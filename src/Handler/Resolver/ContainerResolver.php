@@ -44,7 +44,8 @@ class ContainerResolver implements HandlerResolverInterface
      */
     public function resolveCommandHandler(CommandInterface $command): HandlerInterface
     {
-        $handlerClass = $this->commandInflector->getHandlerClass($command);
+        $commandClass = \get_class($command);
+        $handlerClass = $this->commandInflector->getHandlerClass($commandClass);
 
         if (!$this->container->has($handlerClass)) {
             throw new CommandHandlerMissingException($command);

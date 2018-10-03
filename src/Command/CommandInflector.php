@@ -15,14 +15,16 @@ use mohmann\Hexagonal\CommandInterface;
 class CommandInflector
 {
     /**
-     * @param CommandInterface $command
+     * @param string $commandClass
      * @return string
      */
-    public function getHandlerClass(CommandInterface $command): string
+    public function getHandlerClass(string $commandClass): string
     {
-        $commandClass = \get_class($command);
         $namespaceParts = \explode('\\', $commandClass);
-        $className = (string) \array_pop($namespaceParts);
+
+        /** @var string $className */
+        $className = \array_pop($namespaceParts);
+
         $namespaceParts[] = $this->buildHandlerClassName($className);
 
         return implode('\\', $namespaceParts);
@@ -34,9 +36,7 @@ class CommandInflector
      */
     private function buildHandlerClassName(string $className): string
     {
-        if (\strlen($className) > 6 && false !== ($offset = \stripos($className, 'Command', -7))) {
-            $className = \substr($className, 0, (int) $offset);
-        }
+        $className = \preg_replace('/Command$/', '', $className);
 
         return \sprintf('%sHandler', $className);
     }

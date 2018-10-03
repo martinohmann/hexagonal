@@ -12,9 +12,6 @@ namespace mohmann\Hexagonal\Tests\Command;
 
 use mohmann\Hexagonal\Command\CommandInflector;
 use mohmann\Hexagonal\CommandInterface;
-use mohmann\Hexagonal\Tests\Command\Fixtures\Bar\BazCommand;
-use mohmann\Hexagonal\Tests\Command\Fixtures\Foo;
-use mohmann\Hexagonal\Tests\Command\Fixtures\FooCommand;
 use PHPUnit\Framework\TestCase;
 
 class CommandInflectorTest extends TestCase
@@ -36,9 +33,9 @@ class CommandInflectorTest extends TestCase
      * @test
      * @dataProvider provideTestData
      */
-    public function itBuildsHandlerClassForCommand(CommandInterface $command, string $expected)
+    public function itBuildsHandlerClassForCommand(string $commandClass, string $expected)
     {
-        $className = $this->inflector->getHandlerClass($command);
+        $className = $this->inflector->getHandlerClass($commandClass);
 
         $this->assertSame($expected, $className);
     }
@@ -46,9 +43,11 @@ class CommandInflectorTest extends TestCase
     public function provideTestData(): array
     {
         return [
-            [new Foo(), 'mohmann\Hexagonal\Tests\Command\Fixtures\FooHandler'],
-            [new FooCommand(), 'mohmann\Hexagonal\Tests\Command\Fixtures\FooHandler'],
-            [new BazCommand(), 'mohmann\Hexagonal\Tests\Command\Fixtures\Bar\BazHandler'],
+            ['Namespace\Foo', 'Namespace\FooHandler'],
+            ['Foo\Bar\Baz\FooCommand', 'Foo\Bar\Baz\FooHandler'],
+            ['BazCommand', 'BazHandler'],
+            ['\BazCommand', '\BazHandler'],
+            ['Some\Namespace\SomeLongerClassName', 'Some\Namespace\SomeLongerClassNameHandler'],
         ];
     }
 }
