@@ -42,25 +42,18 @@ class HandlerRegistry
 
     /**
      * @param CommandInterface $command
-     * @return bool
-     */
-    public function hasCommandHandler(CommandInterface $command): bool
-    {
-        return isset($this->handlers[\get_class($command)]);
-    }
-
-    /**
-     * @param CommandInterface $command
      * @throws CommandHandlerMissingException
      * @return HandlerInterface
      */
     public function getCommandHandler(CommandInterface $command): HandlerInterface
     {
-        if (!$this->hasCommandHandler($command)) {
+        $commandClass = \get_class($command);
+
+        if (!isset($this->handlers[$commandClass])) {
             throw new CommandHandlerMissingException($command);
         }
 
-        return $this->handlers[\get_class($command)];
+        return $this->handlers[$commandClass];
     }
 
     /**
