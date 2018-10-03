@@ -50,6 +50,23 @@ class HandlerRegistryTest extends TestCase
     /**
      * @test
      */
+    public function itRegistersHandlersOnConstruct()
+    {
+        $input = [
+            FooCommand::class => \Phake::mock(HandlerInterface::class),
+            BazCommand::class => \Phake::mock(HandlerInterface::class),
+        ];
+
+        $registry = new HandlerRegistry($input);
+
+        $handlers = $registry->getCommandHandlers();
+
+        $this->assertSame($input, $handlers);
+    }
+
+    /**
+     * @test
+     */
     public function itRegistersHandlers()
     {
         $input = [
