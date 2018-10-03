@@ -32,6 +32,7 @@ class ContainerResolver implements HandlerResolverInterface
 
     /**
      * @param ContainerInterface $container
+     * @param CommandInflector $commandInflector
      */
     public function __construct(ContainerInterface $container, CommandInflector $commandInflector)
     {
