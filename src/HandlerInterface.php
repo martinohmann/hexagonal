@@ -19,6 +19,7 @@ interface HandlerInterface
     public function handle(CommandInterface $command);
 
     /**
+     * @deprecated
      * @param CommandInterface $command
      * @return bool
      */

@@ -8,18 +8,25 @@
  * file that was distributed with this source code.
  */
 
-namespace mohmann\Hexagonal\Handler;
+namespace mohmann\Hexagonal\Tests\Handler\Fixtures;
 
 use mohmann\Hexagonal\CommandInterface;
-use mohmann\Hexagonal\Exception\HexagonalException;
 use mohmann\Hexagonal\HandlerInterface;
 
-interface HandlerResolverInterface
+class FooHandler implements HandlerInterface
 {
     /**
-     * @param CommandInterface $command
-     * @throws HexagonalException
-     * @return HandlerInterface
+     * {@inheritDoc}
      */
-    public function resolveCommandHandler(CommandInterface $command): HandlerInterface;
+    public function handle(CommandInterface $command)
+    {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function canHandle(CommandInterface $command): bool
+    {
+        return true;
+    }
 }

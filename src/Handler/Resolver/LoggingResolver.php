@@ -8,13 +8,14 @@
  * file that was distributed with this source code.
  */
 
-namespace mohmann\Hexagonal\Handler;
+namespace mohmann\Hexagonal\Handler\Resolver;
 
 use mohmann\Hexagonal\CommandInterface;
+use mohmann\Hexagonal\Handler\HandlerResolverInterface;
 use mohmann\Hexagonal\HandlerInterface;
 use Psr\Log\LoggerInterface;
 
-class LoggingHandlerResolver implements HandlerResolverInterface
+class LoggingResolver implements HandlerResolverInterface
 {
     /**
      * @var HandlerResolverInterface
@@ -43,11 +44,11 @@ class LoggingHandlerResolver implements HandlerResolverInterface
     {
         $handler = $this->handlerResolver->resolveCommandHandler($command);
 
-        $this->logger->debug(
+        $this->logger->info(
             \sprintf(
-                'Using handler "%s" for command "%s"',
-                \get_class($handler),
-                \get_class($command)
+                'Handling command "%s" with "%s"',
+                \get_class($command),
+                \get_class($handler)
             )
         );
 

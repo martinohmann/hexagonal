@@ -10,6 +10,9 @@
 
 namespace mohmann\Hexagonal\Handler;
 
+use mohmann\Hexagonal\CommandInterface;
+use mohmann\Hexagonal\Exception\CommandHandlerMissingException;
+use mohmann\Hexagonal\Exception\InvalidHandlerClassException;
 use mohmann\Hexagonal\HandlerInterface;
 
 class HandlerRegistry
@@ -24,22 +27,46 @@ class HandlerRegistry
      */
     public function __construct(array $handlers = [])
     {
-        $this->registerHandlers($handlers);
+        $this->registerCommandHandlers($handlers);
     }
 
     /**
+     * @param string $commandClass
      * @param HandlerInterface $handler
      * @return void
      */
-    public function registerHandler(HandlerInterface $handler)
+    public function registerCommandHandler(string $commandClass, HandlerInterface $handler)
     {
-        $this->handlers[] = $handler;
+        $this->handlers[$commandClass] = $handler;
+    }
+
+    /**
+     * @param CommandInterface $command
+     * @return bool
+     */
+    public function hasCommandHandler(CommandInterface $command): bool
+    {
+        return isset($this->handlers[\get_class($command)]);
+    }
+
+    /**
+     * @param CommandInterface $command
+     * @throws CommandHandlerMissingException
+     * @return HandlerInterface
+     */
+    public function getCommandHandler(CommandInterface $command): HandlerInterface
+    {
+        if (!$this->hasCommandHandler($command)) {
+            throw new CommandHandlerMissingException($command);
+        }
+
+        return $this->handlers[\get_class($command)];
     }
 
     /**
      * @return HandlerInterface[]
      */
-    public function getHandlers(): array
+    public function getCommandHandlers(): array
     {
         return $this->handlers;
     }
@@ -48,16 +75,12 @@ class HandlerRegistry
      * @param HandlerInterface[] $handlers
      * @return void
      */
-    public function registerHandlers(array $handlers)
+    public function registerCommandHandlers(array $handlers)
     {
         foreach ($handlers as $handler) {
             if (!$handler instanceof HandlerInterface) {
-                throw new \InvalidArgumentException(
-                    \sprintf(
-                        'Expected class of type "%s", got "%s"',
-                        HandlerInterface::class,
-                        \is_object($handler) ? \get_class($handler) : \gettype($handler)
-                    )
+                throw new InvalidHandlerClassException(
+                    \is_object($handler) ? \get_class($handler) : \gettype($handler)
                 );
             }
         }

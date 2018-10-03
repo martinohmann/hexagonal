@@ -11,7 +11,6 @@
 namespace mohmann\Hexagonal\Tests\Handler\Resolver;
 
 use mohmann\Hexagonal\CommandInterface;
-use mohmann\Hexagonal\Exception\CommandHandlerMissingException;
 use mohmann\Hexagonal\Handler\HandlerRegistry;
 use mohmann\Hexagonal\Handler\Resolver\RegistryResolver;
 use mohmann\Hexagonal\HandlerInterface;
@@ -46,31 +45,12 @@ class RegistryResolverTest extends TestCase
         $handler = \Phake::mock(HandlerInterface::class);
         $command = \Phake::mock(CommandInterface::class);
 
-        \Phake::when($handler)
-            ->canHandle($command)
-            ->thenReturn(true);
-
         \Phake::when($this->handlerRegistry)
-            ->getHandlers()
-            ->thenReturn([$handler]);
+            ->getCommandHandler($command)
+            ->thenReturn($handler);
 
         $resolved = $this->registryResolver->resolveCommandHandler($command);
 
         $this->assertSame($handler, $resolved);
-    }
-
-    /**
-     * @test
-     */
-    public function itThrowsExceptionWhenItCannotResolveCommandHandler()
-    {
-        $command = \Phake::mock(CommandInterface::class);
-
-        \Phake::when($this->handlerRegistry)
-            ->getHandlers()
-            ->thenReturn([]);
-
-        $this->expectException(CommandHandlerMissingException::class);
-        $this->registryResolver->resolveCommandHandler($command);
     }
 }

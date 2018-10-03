@@ -11,7 +11,6 @@
 namespace mohmann\Hexagonal\Handler\Resolver;
 
 use mohmann\Hexagonal\CommandInterface;
-use mohmann\Hexagonal\Exception\CommandHandlerMissingException;
 use mohmann\Hexagonal\Handler\HandlerRegistry;
 use mohmann\Hexagonal\Handler\HandlerResolverInterface;
 use mohmann\Hexagonal\HandlerInterface;
@@ -32,16 +31,10 @@ class RegistryResolver implements HandlerResolverInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function resolveCommandHandler(CommandInterface $command): HandlerInterface
     {
-        foreach ($this->handlerRegistry->getHandlers() as $handler) {
-            if ($handler->canHandle($command)) {
-                return $handler;
-            }
-        }
-
-        throw new CommandHandlerMissingException($command);
+        return $this->handlerRegistry->getCommandHandler($command);
     }
 }

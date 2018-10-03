@@ -56,10 +56,6 @@ class ContainerResolver implements HandlerResolverInterface
             throw new InvalidHandlerClassException(\get_class($handler));
         }
 
-        if (!$handler->canHandle($command)) {
-            throw new CommandHandlerMissingException($command);
-        }
-
         return $handler;
     }
 }

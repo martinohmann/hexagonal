@@ -10,8 +10,13 @@
 
 namespace mohmann\Hexagonal\Tests\Handler;
 
+use mohmann\Hexagonal\CommandInterface;
+use mohmann\Hexagonal\Exception\CommandHandlerMissingException;
+use mohmann\Hexagonal\Exception\InvalidHandlerClassException;
 use mohmann\Hexagonal\Handler\HandlerRegistry;
 use mohmann\Hexagonal\HandlerInterface;
+use mohmann\Hexagonal\Tests\Command\Fixtures\Bar\BazCommand;
+use mohmann\Hexagonal\Tests\Command\Fixtures\FooCommand;
 use PHPUnit\Framework\TestCase;
 
 class HandlerRegistryTest extends TestCase
@@ -32,16 +37,14 @@ class HandlerRegistryTest extends TestCase
     /**
      * @test
      */
-    public function itRegistersHandler()
+    public function itRegistersCommandHandler()
     {
         $handler = \Phake::mock(HandlerInterface::class);
+        $command = \Phake::mock(CommandInterface::class);
 
-        $this->registry->registerHandler($handler);
+        $this->registry->registerCommandHandler(\get_class($command), $handler);
 
-        $handlers = $this->registry->getHandlers();
-
-        $this->assertCount(1, $handlers);
-        $this->assertSame($handler, $handlers[0]);
+        $this->assertSame($handler, $this->registry->getCommandHandler($command));
     }
 
     /**
@@ -50,15 +53,24 @@ class HandlerRegistryTest extends TestCase
     public function itRegistersHandlers()
     {
         $input = [
-            \Phake::mock(HandlerInterface::class),
-            \Phake::mock(HandlerInterface::class),
+            FooCommand::class => \Phake::mock(HandlerInterface::class),
+            BazCommand::class => \Phake::mock(HandlerInterface::class),
         ];
 
-        $this->registry->registerHandlers($input);
+        $this->registry->registerCommandHandlers($input);
 
-        $handlers = $this->registry->getHandlers();
+        $handlers = $this->registry->getCommandHandlers();
 
         $this->assertSame($input, $handlers);
+    }
+
+    /**
+     * @test
+     */
+    public function itThrowsExceptionIfOnSuitableCommandHandlerIsAvailable()
+    {
+        $this->expectException(CommandHandlerMissingException::class);
+        $this->registry->getCommandHandler(new FooCommand());
     }
 
     /**
@@ -67,11 +79,11 @@ class HandlerRegistryTest extends TestCase
     public function itThrowsExceptionIfHandlersHaveInvalidType()
     {
         $handlers = [
-            \Phake::mock(HandlerInterface::class),
-            'foo bar',
+            FooCommand::class => \Phake::mock(HandlerInterface::class),
+            BazCommand::class => 'foo bar',
         ];
 
-        $this->expectException(\InvalidArgumentException::class);
-        $this->registry->registerHandlers($handlers);
+        $this->expectException(InvalidHandlerClassException::class);
+        $this->registry->registerCommandHandlers($handlers);
     }
 }
