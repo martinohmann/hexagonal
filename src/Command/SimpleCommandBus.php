@@ -29,7 +29,7 @@ class SimpleCommandBus implements CommandBusInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function execute(CommandInterface $command)
     {

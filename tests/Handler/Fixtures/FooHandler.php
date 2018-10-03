@@ -21,12 +21,4 @@ class FooHandler implements HandlerInterface
     public function handle(CommandInterface $command)
     {
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function canHandle(CommandInterface $command): bool
-    {
-        return true;
-    }
 }

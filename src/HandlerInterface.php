@@ -17,11 +17,4 @@ interface HandlerInterface
      * @return mixed
      */
     public function handle(CommandInterface $command);
-
-    /**
-     * @deprecated
-     * @param CommandInterface $command
-     * @return bool
-     */
-    public function canHandle(CommandInterface $command): bool;
 }
