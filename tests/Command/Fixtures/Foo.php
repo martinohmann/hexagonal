@@ -8,18 +8,10 @@
  * file that was distributed with this source code.
  */
 
-namespace mohmann\Hexagonal;
+namespace mohmann\Hexagonal\Tests\Command\Fixtures;
 
-interface CommandInterface
+use mohmann\Hexagonal\Command\AbstractCommand;
+
+class Foo extends AbstractCommand
 {
-    /**
-     * @param array $context
-     * @return void
-     */
-    public function setContext(array $context);
-
-    /**
-     * @return array
-     */
-    public function getContext(): array;
 }

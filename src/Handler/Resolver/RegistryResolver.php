@@ -8,13 +8,15 @@
  * file that was distributed with this source code.
  */
 
-namespace mohmann\Hexagonal\Handler;
+namespace mohmann\Hexagonal\Handler\Resolver;
 
 use mohmann\Hexagonal\CommandInterface;
-use mohmann\Hexagonal\Exception\HandlerNotFoundException;
+use mohmann\Hexagonal\Exception\CommandHandlerMissingException;
+use mohmann\Hexagonal\Handler\HandlerRegistry;
+use mohmann\Hexagonal\Handler\HandlerResolverInterface;
 use mohmann\Hexagonal\HandlerInterface;
 
-class HandlerResolver implements HandlerResolverInterface
+class RegistryResolver implements HandlerResolverInterface
 {
     /**
      * @var HandlerRegistry
@@ -40,6 +42,6 @@ class HandlerResolver implements HandlerResolverInterface
             }
         }
 
-        throw new HandlerNotFoundException($command);
+        throw new CommandHandlerMissingException($command);
     }
 }

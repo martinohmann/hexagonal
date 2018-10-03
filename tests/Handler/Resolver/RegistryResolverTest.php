@@ -8,16 +8,16 @@
  * file that was distributed with this source code.
  */
 
-namespace mohmann\Hexagonal\Tests\Handler;
+namespace mohmann\Hexagonal\Tests\Handler\Resolver;
 
 use mohmann\Hexagonal\CommandInterface;
-use mohmann\Hexagonal\Exception\HandlerNotFoundException;
+use mohmann\Hexagonal\Exception\CommandHandlerMissingException;
 use mohmann\Hexagonal\Handler\HandlerRegistry;
-use mohmann\Hexagonal\Handler\HandlerResolver;
+use mohmann\Hexagonal\Handler\Resolver\RegistryResolver;
 use mohmann\Hexagonal\HandlerInterface;
 use PHPUnit\Framework\TestCase;
 
-class HandlerResolverTest extends TestCase
+class RegistryResolverTest extends TestCase
 {
     /**
      * @var HandlerRegistry
@@ -25,9 +25,9 @@ class HandlerResolverTest extends TestCase
     private $handlerRegistry;
 
     /**
-     * @var HandlerResolver
+     * @var RegistryResolver
      */
-    private $handlerResolver;
+    private $registryResolver;
 
     /**
      * @return void
@@ -35,7 +35,7 @@ class HandlerResolverTest extends TestCase
     public function setUp()
     {
         $this->handlerRegistry = \Phake::mock(HandlerRegistry::class);
-        $this->handlerResolver = new HandlerResolver($this->handlerRegistry);
+        $this->registryResolver = new RegistryResolver($this->handlerRegistry);
     }
 
     /**
@@ -54,7 +54,7 @@ class HandlerResolverTest extends TestCase
             ->getHandlers()
             ->thenReturn([$handler]);
 
-        $resolved = $this->handlerResolver->resolveCommandHandler($command);
+        $resolved = $this->registryResolver->resolveCommandHandler($command);
 
         $this->assertSame($handler, $resolved);
     }
@@ -70,7 +70,7 @@ class HandlerResolverTest extends TestCase
             ->getHandlers()
             ->thenReturn([]);
 
-        $this->expectException(HandlerNotFoundException::class);
-        $this->handlerResolver->resolveCommandHandler($command);
+        $this->expectException(CommandHandlerMissingException::class);
+        $this->registryResolver->resolveCommandHandler($command);
     }
 }

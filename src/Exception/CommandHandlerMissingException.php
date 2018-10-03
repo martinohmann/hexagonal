@@ -12,7 +12,7 @@ namespace mohmann\Hexagonal\Exception;
 
 use mohmann\Hexagonal\CommandInterface;
 
-class HandlerNotFoundException extends HexagonalException
+class CommandHandlerMissingException extends HexagonalException
 {
     /**
      * @var CommandInterface
@@ -27,7 +27,7 @@ class HandlerNotFoundException extends HexagonalException
         $this->command = $command;
 
         $message = \sprintf(
-            'No handler found for command "%s" with context "%s"',
+            'The command "%s" with context "%s" could not be handled because there is no suitable handler for it',
             \get_class($command),
             \json_encode($command->getContext())
         );

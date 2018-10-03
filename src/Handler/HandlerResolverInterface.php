@@ -11,14 +11,14 @@
 namespace mohmann\Hexagonal\Handler;
 
 use mohmann\Hexagonal\CommandInterface;
-use mohmann\Hexagonal\Exception\HandlerNotFoundException;
+use mohmann\Hexagonal\Exception\CommandHandlerMissingException;
 use mohmann\Hexagonal\HandlerInterface;
 
 interface HandlerResolverInterface
 {
     /**
      * @param CommandInterface $command
-     * @throws HandlerNotFoundException
+     * @throws CommandHandlerMissingException
      * @return HandlerInterface
      */
     public function resolveCommandHandler(CommandInterface $command): HandlerInterface;

@@ -8,18 +8,10 @@
  * file that was distributed with this source code.
  */
 
-namespace mohmann\Hexagonal;
+namespace mohmann\Hexagonal\Tests\Command\Fixtures\Bar;
 
-interface CommandInterface
+use mohmann\Hexagonal\Tests\Command\Fixtures\FooCommand;
+
+class BazCommand extends FooCommand
 {
-    /**
-     * @param array $context
-     * @return void
-     */
-    public function setContext(array $context);
-
-    /**
-     * @return array
-     */
-    public function getContext(): array;
 }

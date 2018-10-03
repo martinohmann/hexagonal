@@ -37,7 +37,7 @@ class LoggingHandlerResolver implements HandlerResolverInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function resolveCommandHandler(CommandInterface $command): HandlerInterface
     {
