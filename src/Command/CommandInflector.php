@@ -27,7 +27,7 @@ class CommandInflector
 
         $namespaceParts[] = $this->buildHandlerClassName($className);
 
-        return implode('\\', $namespaceParts);
+        return \implode('\\', $namespaceParts);
     }
 
     /**

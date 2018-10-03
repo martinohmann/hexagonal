@@ -15,7 +15,7 @@ use mohmann\Hexagonal\Exception\MissingCommandHandlerException;
 use mohmann\Hexagonal\Tests\Command\Fixtures\FooCommand;
 use PHPUnit\Framework\TestCase;
 
-class CommandHandlerMissingExceptionTest extends TestCase
+class MissingCommandHandlerExceptionTest extends TestCase
 {
     /**
      * @test

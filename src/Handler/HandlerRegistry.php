@@ -42,7 +42,7 @@ class HandlerRegistry
 
     /**
      * @param CommandInterface $command
-     * @throws CommandHandlerMissingException
+     * @throws MissingCommandHandlerException
      * @return HandlerInterface
      */
     public function getCommandHandler(CommandInterface $command): HandlerInterface
