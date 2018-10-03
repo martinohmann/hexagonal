@@ -11,11 +11,13 @@
 namespace mohmann\Hexagonal\Command;
 
 use mohmann\Hexagonal\CommandInterface;
+use mohmann\Hexagonal\Exception\HexagonalException;
 
 interface CommandBusInterface
 {
     /**
      * @param CommandInterface $command
+     * @throws HexagonalException
      * @return mixed
      */
     public function execute(CommandInterface $command);
