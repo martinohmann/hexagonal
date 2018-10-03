@@ -11,7 +11,7 @@
 namespace mohmann\Hexagonal\Tests\Handler;
 
 use mohmann\Hexagonal\CommandInterface;
-use mohmann\Hexagonal\Exception\CommandHandlerMissingException;
+use mohmann\Hexagonal\Exception\MissingCommandHandlerException;
 use mohmann\Hexagonal\Exception\InvalidHandlerClassException;
 use mohmann\Hexagonal\Handler\HandlerRegistry;
 use mohmann\Hexagonal\HandlerInterface;
@@ -86,7 +86,7 @@ class HandlerRegistryTest extends TestCase
     {
         $command = \Phake::mock(CommandInterface::class);
 
-        $this->expectException(CommandHandlerMissingException::class);
+        $this->expectException(MissingCommandHandlerException::class);
         $this->registry->getCommandHandler($command);
     }
 

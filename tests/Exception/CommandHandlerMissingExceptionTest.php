@@ -11,7 +11,7 @@
 namespace mohmann\Hexagonal\Tests\Exception;
 
 use mohmann\Hexagonal\CommandInterface;
-use mohmann\Hexagonal\Exception\CommandHandlerMissingException;
+use mohmann\Hexagonal\Exception\MissingCommandHandlerException;
 use mohmann\Hexagonal\Tests\Command\Fixtures\FooCommand;
 use PHPUnit\Framework\TestCase;
 
@@ -23,7 +23,7 @@ class CommandHandlerMissingExceptionTest extends TestCase
     public function itHasMessage()
     {
         $command = new FooCommand();
-        $exception = new CommandHandlerMissingException($command);
+        $exception = new MissingCommandHandlerException($command);
 
         $this->assertSame(
             'The command "mohmann\Hexagonal\Tests\Command\Fixtures\FooCommand" ' .
@@ -39,7 +39,7 @@ class CommandHandlerMissingExceptionTest extends TestCase
     {
         $command = new FooCommand();
         $command->setContext(['foo' => ['bar' => 'baz']]);
-        $exception = new CommandHandlerMissingException($command);
+        $exception = new MissingCommandHandlerException($command);
 
         $this->assertSame(
             'The command "mohmann\Hexagonal\Tests\Command\Fixtures\FooCommand" ' .
@@ -55,7 +55,7 @@ class CommandHandlerMissingExceptionTest extends TestCase
     {
         $command = \Phake::mock(CommandInterface::class);
 
-        $exception = new CommandHandlerMissingException($command);
+        $exception = new MissingCommandHandlerException($command);
 
         $this->assertSame($command, $exception->getCommand());
     }

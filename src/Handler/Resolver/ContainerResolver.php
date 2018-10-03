@@ -12,7 +12,7 @@ namespace mohmann\Hexagonal\Handler\Resolver;
 
 use mohmann\Hexagonal\Command\CommandInflector;
 use mohmann\Hexagonal\CommandInterface;
-use mohmann\Hexagonal\Exception\CommandHandlerMissingException;
+use mohmann\Hexagonal\Exception\MissingCommandHandlerException;
 use mohmann\Hexagonal\Exception\InvalidHandlerClassException;
 use mohmann\Hexagonal\Handler\HandlerResolverInterface;
 use mohmann\Hexagonal\HandlerInterface;
@@ -48,7 +48,7 @@ class ContainerResolver implements HandlerResolverInterface
         $handlerClass = $this->commandInflector->getHandlerClass($commandClass);
 
         if (!$this->container->has($handlerClass)) {
-            throw new CommandHandlerMissingException($command);
+            throw new MissingCommandHandlerException($command);
         }
 
         $handler = $this->container->get($handlerClass);

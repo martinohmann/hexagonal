@@ -12,7 +12,7 @@ namespace mohmann\Hexagonal\Exception;
 
 use mohmann\Hexagonal\CommandInterface;
 
-class CommandHandlerMissingException extends HexagonalException
+class MissingCommandHandlerException extends HexagonalException
 {
     /**
      * @var CommandInterface

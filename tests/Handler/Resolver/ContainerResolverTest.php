@@ -12,7 +12,7 @@ namespace mohmann\Hexagonal\Tests\Handler\Resolver;
 
 use mohmann\Hexagonal\Command\CommandInflector;
 use mohmann\Hexagonal\CommandInterface;
-use mohmann\Hexagonal\Exception\CommandHandlerMissingException;
+use mohmann\Hexagonal\Exception\MissingCommandHandlerException;
 use mohmann\Hexagonal\Exception\InvalidHandlerClassException;
 use mohmann\Hexagonal\Handler\Resolver\ContainerResolver;
 use mohmann\Hexagonal\HandlerInterface;
@@ -91,7 +91,7 @@ class ContainerResolverTest extends TestCase
             ->has($handlerClass)
             ->thenReturn(false);
 
-        $this->expectException(CommandHandlerMissingException::class);
+        $this->expectException(MissingCommandHandlerException::class);
         $this->containerResolver->resolveCommandHandler($command);
     }
 

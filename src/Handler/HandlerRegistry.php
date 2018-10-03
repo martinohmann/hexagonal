@@ -11,7 +11,7 @@
 namespace mohmann\Hexagonal\Handler;
 
 use mohmann\Hexagonal\CommandInterface;
-use mohmann\Hexagonal\Exception\CommandHandlerMissingException;
+use mohmann\Hexagonal\Exception\MissingCommandHandlerException;
 use mohmann\Hexagonal\Exception\InvalidHandlerClassException;
 use mohmann\Hexagonal\HandlerInterface;
 
@@ -50,7 +50,7 @@ class HandlerRegistry
         $commandClass = \get_class($command);
 
         if (!isset($this->handlers[$commandClass])) {
-            throw new CommandHandlerMissingException($command);
+            throw new MissingCommandHandlerException($command);
         }
 
         return $this->handlers[$commandClass];
