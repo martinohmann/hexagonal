@@ -10,20 +10,20 @@
 
 namespace mohmann\Hexagonal\Tests\Exception;
 
-use mohmann\Hexagonal\Exception\InvalidClassException;
+use mohmann\Hexagonal\Exception\InvalidValidatorClassException;
 use PHPUnit\Framework\TestCase;
 
-class InvalidClassExceptionTest extends TestCase
+class InvalidValidatorClassExceptionTest extends TestCase
 {
     /**
      * @test
      */
     public function itHasMessage()
     {
-        $exception = new InvalidClassException('Foo\Bar\Baz', 'Foo\BarInterface');
+        $exception = new InvalidValidatorClassException('Foo\Bar\Baz');
 
         $this->assertSame(
-            'Class "Foo\Bar\Baz" does not implement "Foo\BarInterface"',
+            'Class "Foo\Bar\Baz" does not implement "mohmann\Hexagonal\ValidatorInterface"',
             $exception->getMessage()
         );
     }
