@@ -31,7 +31,7 @@ class CommandInflectorTest extends TestCase
 
     /**
      * @test
-     * @dataProvider provideTestData
+     * @dataProvider provideHandlerClassTestData
      */
     public function itBuildsHandlerClassForCommand(string $commandClass, string $expected)
     {
@@ -40,7 +40,21 @@ class CommandInflectorTest extends TestCase
         $this->assertSame($expected, $className);
     }
 
-    public function provideTestData(): array
+    /**
+     * @test
+     * @dataProvider provideValidatorClassTestData
+     */
+    public function itBuildsValidatorClassForCommand(string $commandClass, string $expected)
+    {
+        $className = $this->inflector->getValidatorClass($commandClass);
+
+        $this->assertSame($expected, $className);
+    }
+
+    /**
+     * @return array
+     */
+    public function provideHandlerClassTestData(): array
     {
         return [
             ['Namespace\Foo', 'Namespace\FooHandler'],
@@ -48,6 +62,20 @@ class CommandInflectorTest extends TestCase
             ['BazCommand', 'BazHandler'],
             ['\BazCommand', '\BazHandler'],
             ['Some\Namespace\SomeLongerClassName', 'Some\Namespace\SomeLongerClassNameHandler'],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function provideValidatorClassTestData(): array
+    {
+        return [
+            ['Namespace\Foo', 'Namespace\FooValidator'],
+            ['Foo\Bar\Baz\FooCommand', 'Foo\Bar\Baz\FooValidator'],
+            ['BazCommand', 'BazValidator'],
+            ['\BazCommand', '\BazValidator'],
+            ['Some\Namespace\SomeLongerClassName', 'Some\Namespace\SomeLongerClassNameValidator'],
         ];
     }
 }

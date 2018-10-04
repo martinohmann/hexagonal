@@ -10,15 +10,19 @@
 
 namespace mohmann\Hexagonal\Exception;
 
-use mohmann\Hexagonal\HandlerInterface;
-
-class InvalidHandlerClassException extends InvalidClassException
+class InvalidClassException extends HexagonalException
 {
     /**
      * @param string $className
      */
-    public function __construct(string $className)
+    public function __construct(string $className, string $expectedClassName)
     {
-        parent::__construct($className, HandlerInterface::class);
+        $message = \sprintf(
+            'Class "%s" does not implement "%s"',
+            $className,
+            $expectedClassName
+        );
+
+        parent::__construct($message);
     }
 }

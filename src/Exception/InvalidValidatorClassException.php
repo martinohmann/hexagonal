@@ -10,15 +10,15 @@
 
 namespace mohmann\Hexagonal\Exception;
 
-use mohmann\Hexagonal\HandlerInterface;
+use mohmann\Hexagonal\ValidatorInterface;
 
-class InvalidHandlerClassException extends InvalidClassException
+class InvalidValidatorClassException extends InvalidClassException
 {
     /**
      * @param string $className
      */
     public function __construct(string $className)
     {
-        parent::__construct($className, HandlerInterface::class);
+        parent::__construct($className, ValidatorInterface::class);
     }
 }
