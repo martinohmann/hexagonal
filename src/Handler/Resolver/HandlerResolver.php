@@ -8,14 +8,15 @@
  * file that was distributed with this source code.
  */
 
-namespace mohmann\Hexagonal\Handler;
+namespace mohmann\Hexagonal\Handler\Resolver;
 
 use mohmann\Hexagonal\CommandInterface;
 use mohmann\Hexagonal\Exception\InvalidHandlerClassException;
 use mohmann\Hexagonal\Exception\MissingCommandHandlerException;
+use mohmann\Hexagonal\Handler\HandlerResolverInterface;
 use mohmann\Hexagonal\HandlerInterface;
 
-class HandlerRegistry
+class HandlerResolver implements HandlerResolverInterface
 {
     /**
      * @var HandlerInterface[]
@@ -31,21 +32,9 @@ class HandlerRegistry
     }
 
     /**
-     * @param string $commandClass
-     * @param HandlerInterface $handler
-     * @return void
+     * {@inheritDoc}
      */
-    public function registerCommandHandler(string $commandClass, HandlerInterface $handler)
-    {
-        $this->handlers[$commandClass] = $handler;
-    }
-
-    /**
-     * @param CommandInterface $command
-     * @throws MissingCommandHandlerException
-     * @return HandlerInterface
-     */
-    public function getCommandHandler(CommandInterface $command): HandlerInterface
+    public function resolveCommandHandler(CommandInterface $command): HandlerInterface
     {
         $commandClass = \get_class($command);
 
@@ -62,6 +51,16 @@ class HandlerRegistry
     public function getCommandHandlers(): array
     {
         return $this->handlers;
+    }
+
+    /**
+     * @param string $commandClass
+     * @param HandlerInterface $handler
+     * @return void
+     */
+    public function registerCommandHandler(string $commandClass, HandlerInterface $handler)
+    {
+        $this->handlers[$commandClass] = $handler;
     }
 
     /**

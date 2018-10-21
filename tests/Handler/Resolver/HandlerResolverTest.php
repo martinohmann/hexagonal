@@ -8,28 +8,28 @@
  * file that was distributed with this source code.
  */
 
-namespace mohmann\Hexagonal\Tests\Handler;
+namespace mohmann\Hexagonal\Tests\Handler\Resolver;
 
 use mohmann\Hexagonal\CommandInterface;
 use mohmann\Hexagonal\Exception\InvalidHandlerClassException;
 use mohmann\Hexagonal\Exception\MissingCommandHandlerException;
-use mohmann\Hexagonal\Handler\HandlerRegistry;
+use mohmann\Hexagonal\Handler\Resolver\HandlerResolver;
 use mohmann\Hexagonal\HandlerInterface;
 use PHPUnit\Framework\TestCase;
 
-class HandlerRegistryTest extends TestCase
+class HandlerResolverTest extends TestCase
 {
     /**
-     * @var HandlerRegistry
+     * @var HandlerResolver
      */
-    private $registry;
+    private $resolver;
 
     /**
      * @return void
      */
     public function setUp()
     {
-        $this->registry = new HandlerRegistry();
+        $this->resolver = new HandlerResolver();
     }
 
     /**
@@ -40,9 +40,9 @@ class HandlerRegistryTest extends TestCase
         $handler = \Phake::mock(HandlerInterface::class);
         $command = \Phake::mock(CommandInterface::class);
 
-        $this->registry->registerCommandHandler(\get_class($command), $handler);
+        $this->resolver->registerCommandHandler(\get_class($command), $handler);
 
-        $this->assertSame($handler, $this->registry->getCommandHandler($command));
+        $this->assertSame($handler, $this->resolver->resolveCommandHandler($command));
     }
 
     /**
@@ -55,7 +55,7 @@ class HandlerRegistryTest extends TestCase
             'Some\Other\Command' => \Phake::mock(HandlerInterface::class),
         ];
 
-        $registry = new HandlerRegistry($input);
+        $registry = new HandlerResolver($input);
 
         $handlers = $registry->getCommandHandlers();
 
@@ -72,9 +72,9 @@ class HandlerRegistryTest extends TestCase
             'Some\Other\Command' => \Phake::mock(HandlerInterface::class),
         ];
 
-        $this->registry->registerCommandHandlers($input);
+        $this->resolver->registerCommandHandlers($input);
 
-        $handlers = $this->registry->getCommandHandlers();
+        $handlers = $this->resolver->getCommandHandlers();
 
         $this->assertSame($input, $handlers);
     }
@@ -87,7 +87,7 @@ class HandlerRegistryTest extends TestCase
         $command = \Phake::mock(CommandInterface::class);
 
         $this->expectException(MissingCommandHandlerException::class);
-        $this->registry->getCommandHandler($command);
+        $this->resolver->resolveCommandHandler($command);
     }
 
     /**
@@ -101,6 +101,6 @@ class HandlerRegistryTest extends TestCase
         ];
 
         $this->expectException(InvalidHandlerClassException::class);
-        $this->registry->registerCommandHandlers($handlers);
+        $this->resolver->registerCommandHandlers($handlers);
     }
 }
