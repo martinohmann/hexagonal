@@ -8,9 +8,9 @@
  * file that was distributed with this source code.
  */
 
-namespace mohmann\Hexagonal\Tests\Command;
+namespace mohmann\Hexagonal\Tests\Command\Inflector;
 
-use mohmann\Hexagonal\Command\CommandInflector;
+use mohmann\Hexagonal\Command\Inflector\CommandInflector;
 use mohmann\Hexagonal\CommandInterface;
 use PHPUnit\Framework\TestCase;
 

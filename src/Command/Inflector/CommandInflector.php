@@ -8,11 +8,12 @@
  * file that was distributed with this source code.
  */
 
-namespace mohmann\Hexagonal\Command;
+namespace mohmann\Hexagonal\Command\Inflector;
 
+use mohmann\Hexagonal\Command\CommandInflectorInterface;
 use mohmann\Hexagonal\CommandInterface;
 
-class CommandInflector
+class CommandInflector implements CommandInflectorInterface
 {
     /**
      * @const string
@@ -25,8 +26,7 @@ class CommandInflector
     const TYPE_VALIDATOR = 'Validator';
 
     /**
-     * @param string $commandClass
-     * @return string
+     * {@inheritDoc}
      */
     public function getHandlerClass(string $commandClass): string
     {
@@ -34,8 +34,7 @@ class CommandInflector
     }
 
     /**
-     * @param string $commandClass
-     * @return string
+     * {@inheritDoc}
      */
     public function getValidatorClass(string $commandClass): string
     {

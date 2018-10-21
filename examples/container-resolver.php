@@ -11,7 +11,7 @@
 use mohmann\Hexagonal\Command\AbstractCommand;
 use mohmann\Hexagonal\Command\Bus\SimpleCommandBus;
 use mohmann\Hexagonal\Command\Bus\ValidatingCommandBus;
-use mohmann\Hexagonal\Command\CommandInflector;
+use mohmann\Hexagonal\Command\Inflector\CommandInflector;
 use mohmann\Hexagonal\CommandInterface;
 use mohmann\Hexagonal\Exception\CommandValidationException;
 use mohmann\Hexagonal\Exception\HexagonalException;

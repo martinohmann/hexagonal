@@ -10,7 +10,7 @@
 
 namespace mohmann\Hexagonal\Tests\Validator\Resolver;
 
-use mohmann\Hexagonal\Command\CommandInflector;
+use mohmann\Hexagonal\Command\Inflector\CommandInflector;
 use mohmann\Hexagonal\CommandInterface;
 use mohmann\Hexagonal\Exception\InvalidValidatorClassException;
 use mohmann\Hexagonal\Exception\MissingCommandValidatorException;
