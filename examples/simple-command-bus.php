@@ -9,7 +9,7 @@
  */
 
 use mohmann\Hexagonal\Command\AbstractCommand;
-use mohmann\Hexagonal\Command\SimpleCommandBus;
+use mohmann\Hexagonal\Command\Bus\SimpleCommandBus;
 use mohmann\Hexagonal\CommandInterface;
 use mohmann\Hexagonal\Exception\HexagonalException;
 use mohmann\Hexagonal\Handler\Resolver\HandlerResolver;

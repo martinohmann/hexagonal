@@ -8,9 +8,9 @@
  * file that was distributed with this source code.
  */
 
-namespace mohmann\Hexagonal\Tests\Command;
+namespace mohmann\Hexagonal\Tests\Command\Bus;
 
-use mohmann\Hexagonal\Command\SimpleCommandBus;
+use mohmann\Hexagonal\Command\Bus\SimpleCommandBus;
 use mohmann\Hexagonal\CommandInterface;
 use mohmann\Hexagonal\Handler\HandlerResolverInterface;
 use mohmann\Hexagonal\HandlerInterface;

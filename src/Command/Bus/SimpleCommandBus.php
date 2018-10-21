@@ -8,9 +8,10 @@
  * file that was distributed with this source code.
  */
 
-namespace mohmann\Hexagonal\Command;
+namespace mohmann\Hexagonal\Command\Bus;
 
 use mohmann\Hexagonal\CommandInterface;
+use mohmann\Hexagonal\Command\CommandBusInterface;
 use mohmann\Hexagonal\Handler\HandlerResolverInterface;
 
 class SimpleCommandBus implements CommandBusInterface
