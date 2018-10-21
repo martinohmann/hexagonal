@@ -19,6 +19,8 @@ Usage example
 -------------
 
 ```php
+<?php
+
 use mohmann\Hexagonal\Command\AbstractCommand;
 use mohmann\Hexagonal\Command\Bus\SimpleCommandBus;
 use mohmann\Hexagonal\CommandInterface;
