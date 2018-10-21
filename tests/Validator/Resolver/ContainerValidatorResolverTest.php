@@ -14,12 +14,12 @@ use mohmann\Hexagonal\Command\CommandInflector;
 use mohmann\Hexagonal\CommandInterface;
 use mohmann\Hexagonal\Exception\InvalidValidatorClassException;
 use mohmann\Hexagonal\Exception\MissingCommandValidatorException;
-use mohmann\Hexagonal\Validator\Resolver\ContainerResolver;
+use mohmann\Hexagonal\Validator\Resolver\ContainerValidatorResolver;
 use mohmann\Hexagonal\ValidatorInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 
-class ContainerResolverTest extends TestCase
+class ContainerValidatorResolverTest extends TestCase
 {
     /**
      * @var ContainerInterface
@@ -32,9 +32,9 @@ class ContainerResolverTest extends TestCase
     private $commandInflector;
 
     /**
-     * @var ContainerResolver
+     * @var ContainerValidatorResolver
      */
-    private $containerResolver;
+    private $resolver;
 
     /**
      * @return void
@@ -43,7 +43,7 @@ class ContainerResolverTest extends TestCase
     {
         $this->container = \Phake::mock(ContainerInterface::class);
         $this->commandInflector = \Phake::mock(CommandInflector::class);
-        $this->containerResolver = new ContainerResolver($this->container, $this->commandInflector);
+        $this->resolver = new ContainerValidatorResolver($this->container, $this->commandInflector);
     }
 
     /**
@@ -68,7 +68,7 @@ class ContainerResolverTest extends TestCase
             ->get($validatorClass)
             ->thenReturn($validator);
 
-        $result = $this->containerResolver->resolveCommandValidator($command);
+        $result = $this->resolver->resolveCommandValidator($command);
 
         $this->assertSame($validator, $result);
     }
@@ -92,7 +92,7 @@ class ContainerResolverTest extends TestCase
             ->thenReturn(false);
 
         $this->expectException(MissingCommandValidatorException::class);
-        $this->containerResolver->resolveCommandValidator($command);
+        $this->resolver->resolveCommandValidator($command);
     }
 
     /**
@@ -118,6 +118,6 @@ class ContainerResolverTest extends TestCase
             ->thenReturn(new \stdClass);
 
         $this->expectException(InvalidValidatorClassException::class);
-        $this->containerResolver->resolveCommandValidator($command);
+        $this->resolver->resolveCommandValidator($command);
     }
 }

@@ -15,7 +15,7 @@ use mohmann\Hexagonal\Handler\HandlerResolverInterface;
 use mohmann\Hexagonal\HandlerInterface;
 use Psr\Log\LoggerInterface;
 
-class LoggingResolver implements HandlerResolverInterface
+class LoggingHandlerResolver implements HandlerResolverInterface
 {
     /**
      * @var HandlerResolverInterface

@@ -15,7 +15,7 @@ use mohmann\Hexagonal\Validator\ValidatorResolverInterface;
 use mohmann\Hexagonal\ValidatorInterface;
 use Psr\Log\LoggerInterface;
 
-class LoggingResolver implements ValidatorResolverInterface
+class LoggingValidatorResolver implements ValidatorResolverInterface
 {
     /**
      * @var ValidatorResolverInterface

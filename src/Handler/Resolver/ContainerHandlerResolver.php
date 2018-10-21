@@ -8,17 +8,17 @@
  * file that was distributed with this source code.
  */
 
-namespace mohmann\Hexagonal\Validator\Resolver;
+namespace mohmann\Hexagonal\Handler\Resolver;
 
 use mohmann\Hexagonal\Command\CommandInflector;
 use mohmann\Hexagonal\CommandInterface;
-use mohmann\Hexagonal\Exception\InvalidValidatorClassException;
-use mohmann\Hexagonal\Exception\MissingCommandValidatorException;
-use mohmann\Hexagonal\Validator\ValidatorResolverInterface;
-use mohmann\Hexagonal\ValidatorInterface;
+use mohmann\Hexagonal\Exception\InvalidHandlerClassException;
+use mohmann\Hexagonal\Exception\MissingCommandHandlerException;
+use mohmann\Hexagonal\Handler\HandlerResolverInterface;
+use mohmann\Hexagonal\HandlerInterface;
 use Psr\Container\ContainerInterface;
 
-class ContainerResolver implements ValidatorResolverInterface
+class ContainerHandlerResolver implements HandlerResolverInterface
 {
     /**
      * @var ContainerInterface
@@ -43,21 +43,21 @@ class ContainerResolver implements ValidatorResolverInterface
     /**
      * {@inheritDoc}
      */
-    public function resolveCommandValidator(CommandInterface $command): ValidatorInterface
+    public function resolveCommandHandler(CommandInterface $command): HandlerInterface
     {
         $commandClass = \get_class($command);
-        $validatorClass = $this->commandInflector->getValidatorClass($commandClass);
+        $handlerClass = $this->commandInflector->getHandlerClass($commandClass);
 
-        if (!$this->container->has($validatorClass)) {
-            throw new MissingCommandValidatorException($command);
+        if (!$this->container->has($handlerClass)) {
+            throw new MissingCommandHandlerException($command);
         }
 
-        $validator = $this->container->get($validatorClass);
+        $handler = $this->container->get($handlerClass);
 
-        if (!$validator instanceof ValidatorInterface) {
-            throw new InvalidValidatorClassException(\get_class($validator));
+        if (!$handler instanceof HandlerInterface) {
+            throw new InvalidHandlerClassException(\get_class($handler));
         }
 
-        return $validator;
+        return $handler;
     }
 }

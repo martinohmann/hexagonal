@@ -12,14 +12,14 @@ namespace mohmann\Hexagonal\Tests\Handler\Resolver;
 
 use mohmann\Hexagonal\CommandInterface;
 use mohmann\Hexagonal\Handler\HandlerResolverInterface;
-use mohmann\Hexagonal\Handler\Resolver\LoggingResolver;
+use mohmann\Hexagonal\Handler\Resolver\LoggingHandlerResolver;
 use mohmann\Hexagonal\HandlerInterface;
 use mohmann\Hexagonal\Tests\Command\Fixtures\FooCommand;
 use mohmann\Hexagonal\Tests\Handler\Fixtures\FooHandler;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
-class LoggingResolverTest extends TestCase
+class LoggingHandlerResolverTest extends TestCase
 {
     /**
      * @var HandlerResolverInterface
@@ -32,9 +32,9 @@ class LoggingResolverTest extends TestCase
     private $logger;
 
     /**
-     * @var LoggingResolver
+     * @var LoggingHandlerResolver
      */
-    private $loggingResolver;
+    private $resolver;
 
     /**
      * @return void
@@ -43,7 +43,7 @@ class LoggingResolverTest extends TestCase
     {
         $this->decoratedResolver = \Phake::mock(HandlerResolverInterface::class);
         $this->logger = \Phake::mock(LoggerInterface::class);
-        $this->loggingResolver = new LoggingResolver($this->decoratedResolver, $this->logger);
+        $this->resolver = new LoggingHandlerResolver($this->decoratedResolver, $this->logger);
     }
 
     /**
@@ -58,7 +58,7 @@ class LoggingResolverTest extends TestCase
             ->resolveCommandHandler($command)
             ->thenReturn($handler);
 
-        $result = $this->loggingResolver->resolveCommandHandler($command);
+        $result = $this->resolver->resolveCommandHandler($command);
 
         \Phake::verify($this->decoratedResolver)
             ->resolveCommandHandler($command);
@@ -78,7 +78,7 @@ class LoggingResolverTest extends TestCase
             ->resolveCommandHandler($command)
             ->thenReturn($handler);
 
-        $this->loggingResolver->resolveCommandHandler($command);
+        $this->resolver->resolveCommandHandler($command);
 
         \Phake::verify($this->logger)
             ->info(\Phake::capture($message));

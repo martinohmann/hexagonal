@@ -14,12 +14,12 @@ use mohmann\Hexagonal\Command\CommandInflector;
 use mohmann\Hexagonal\CommandInterface;
 use mohmann\Hexagonal\Exception\InvalidHandlerClassException;
 use mohmann\Hexagonal\Exception\MissingCommandHandlerException;
-use mohmann\Hexagonal\Handler\Resolver\ContainerResolver;
+use mohmann\Hexagonal\Handler\Resolver\ContainerHandlerResolver;
 use mohmann\Hexagonal\HandlerInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 
-class ContainerResolverTest extends TestCase
+class ContainerHandlerResolverTest extends TestCase
 {
     /**
      * @var ContainerInterface
@@ -32,9 +32,9 @@ class ContainerResolverTest extends TestCase
     private $commandInflector;
 
     /**
-     * @var ContainerResolver
+     * @var ContainerHandlerResolver
      */
-    private $containerResolver;
+    private $resolver;
 
     /**
      * @return void
@@ -43,7 +43,7 @@ class ContainerResolverTest extends TestCase
     {
         $this->container = \Phake::mock(ContainerInterface::class);
         $this->commandInflector = \Phake::mock(CommandInflector::class);
-        $this->containerResolver = new ContainerResolver($this->container, $this->commandInflector);
+        $this->resolver = new ContainerHandlerResolver($this->container, $this->commandInflector);
     }
 
     /**
@@ -68,7 +68,7 @@ class ContainerResolverTest extends TestCase
             ->get($handlerClass)
             ->thenReturn($handler);
 
-        $result = $this->containerResolver->resolveCommandHandler($command);
+        $result = $this->resolver->resolveCommandHandler($command);
 
         $this->assertSame($handler, $result);
     }
@@ -92,7 +92,7 @@ class ContainerResolverTest extends TestCase
             ->thenReturn(false);
 
         $this->expectException(MissingCommandHandlerException::class);
-        $this->containerResolver->resolveCommandHandler($command);
+        $this->resolver->resolveCommandHandler($command);
     }
 
     /**
@@ -118,6 +118,6 @@ class ContainerResolverTest extends TestCase
             ->thenReturn(new \stdClass);
 
         $this->expectException(InvalidHandlerClassException::class);
-        $this->containerResolver->resolveCommandHandler($command);
+        $this->resolver->resolveCommandHandler($command);
     }
 }

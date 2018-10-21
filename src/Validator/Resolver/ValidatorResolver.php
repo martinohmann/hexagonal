@@ -13,8 +13,8 @@ namespace mohmann\Hexagonal\Validator\Resolver;
 use mohmann\Hexagonal\CommandInterface;
 use mohmann\Hexagonal\Exception\InvalidValidatorClassException;
 use mohmann\Hexagonal\Exception\MissingCommandValidatorException;
-use mohmann\Hexagonal\ValidatorInterface;
 use mohmann\Hexagonal\Validator\ValidatorResolverInterface;
+use mohmann\Hexagonal\ValidatorInterface;
 
 class ValidatorResolver implements ValidatorResolverInterface
 {
