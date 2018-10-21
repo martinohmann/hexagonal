@@ -18,7 +18,7 @@ use mohmann\Hexagonal\Validator\ValidatorResolverInterface;
 use mohmann\Hexagonal\ValidatorInterface;
 use PHPUnit\Framework\TestCase;
 
-class ValidatoringCommandBusTest extends TestCase
+class ValidatingCommandBusTest extends TestCase
 {
     /**
      * @var CommandBusInterface
