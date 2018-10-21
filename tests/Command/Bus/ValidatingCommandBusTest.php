@@ -10,8 +10,8 @@
 
 namespace mohmann\Hexagonal\Tests\Command\Bus;
 
-use mohmann\Hexagonal\Command\CommandBusInterface;
 use mohmann\Hexagonal\Command\Bus\ValidatingCommandBus;
+use mohmann\Hexagonal\Command\CommandBusInterface;
 use mohmann\Hexagonal\CommandInterface;
 use mohmann\Hexagonal\Exception\CommandValidationException;
 use mohmann\Hexagonal\Validator\ValidatorResolverInterface;

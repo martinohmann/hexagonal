@@ -10,8 +10,8 @@
 
 namespace mohmann\Hexagonal\Command\Bus;
 
-use mohmann\Hexagonal\CommandInterface;
 use mohmann\Hexagonal\Command\CommandBusInterface;
+use mohmann\Hexagonal\CommandInterface;
 use mohmann\Hexagonal\Handler\HandlerResolverInterface;
 
 class SimpleCommandBus implements CommandBusInterface

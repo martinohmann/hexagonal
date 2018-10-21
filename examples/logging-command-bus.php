@@ -9,11 +9,11 @@
  */
 
 use mohmann\Hexagonal\Command\AbstractCommand;
+use mohmann\Hexagonal\Command\Bus\LoggingCommandBus;
 use mohmann\Hexagonal\Command\Bus\SimpleCommandBus;
 use mohmann\Hexagonal\CommandInterface;
 use mohmann\Hexagonal\Exception\HexagonalException;
 use mohmann\Hexagonal\Handler\Resolver\HandlerResolver;
-use mohmann\Hexagonal\Handler\Resolver\LoggingHandlerResolver;
 use mohmann\Hexagonal\HandlerInterface;
 use Psr\Log\AbstractLogger;
 use Psr\Log\NullLogger;
@@ -48,6 +48,7 @@ class FooLogger extends AbstractLogger
     public function log($level, $message, array $context = [])
     {
         var_dump($message);
+        var_dump($context);
     }
 }
 
@@ -55,12 +56,11 @@ $handlerResolver = new HandlerResolver([
     FooCommand::class => new FooHandler(),
 ]);
 
-$loggingHandlerResolver = new LoggingHandlerResolver($handlerResolver, new FooLogger());
-
-$commandBus = new SimpleCommandBus($loggingHandlerResolver);
+$commandBus = new LoggingCommandBus($handlerResolver, new FooLogger());
 
 try {
     $command = new FooCommand('bar');
+    $command->setContext(['foo' => 'bar']);
 
     $result = $commandBus->execute($command);
 

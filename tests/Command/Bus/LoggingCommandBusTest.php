@@ -8,23 +8,23 @@
  * file that was distributed with this source code.
  */
 
-namespace mohmann\Hexagonal\Tests\Handler\Resolver;
+namespace mohmann\Hexagonal\Tests\Command\Bus;
 
+use mohmann\Hexagonal\Command\Bus\LoggingCommandBus;
 use mohmann\Hexagonal\CommandInterface;
 use mohmann\Hexagonal\Handler\HandlerResolverInterface;
-use mohmann\Hexagonal\Handler\Resolver\LoggingHandlerResolver;
 use mohmann\Hexagonal\HandlerInterface;
 use mohmann\Hexagonal\Tests\Command\Fixtures\FooCommand;
 use mohmann\Hexagonal\Tests\Handler\Fixtures\FooHandler;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
-class LoggingHandlerResolverTest extends TestCase
+class LoggingCommandBusTest extends TestCase
 {
     /**
      * @var HandlerResolverInterface
      */
-    private $decoratedResolver;
+    private $handlerResolver;
 
     /**
      * @var LoggerInterface
@@ -32,38 +32,57 @@ class LoggingHandlerResolverTest extends TestCase
     private $logger;
 
     /**
-     * @var LoggingHandlerResolver
+     * @var LoggingCommandBus
      */
-    private $resolver;
+    private $commandBus;
 
     /**
      * @return void
      */
     public function setUp()
     {
-        $this->decoratedResolver = \Phake::mock(HandlerResolverInterface::class);
+        $this->handlerResolver = \Phake::mock(HandlerResolverInterface::class);
         $this->logger = \Phake::mock(LoggerInterface::class);
-        $this->resolver = new LoggingHandlerResolver($this->decoratedResolver, $this->logger);
+        $this->commandBus = new LoggingCommandBus($this->handlerResolver, $this->logger);
     }
 
     /**
      * @test
      */
-    public function itCallsDecoratedResolver()
+    public function itExecutesCommandUsingHandler()
     {
         $command = \Phake::mock(CommandInterface::class);
         $handler = \Phake::mock(HandlerInterface::class);
 
-        \Phake::when($this->decoratedResolver)
+        \Phake::when($this->handlerResolver)
             ->resolveCommandHandler($command)
             ->thenReturn($handler);
 
-        $result = $this->resolver->resolveCommandHandler($command);
+        $this->commandBus->execute($command);
 
-        \Phake::verify($this->decoratedResolver)
-            ->resolveCommandHandler($command);
+        \Phake::verify($handler)
+            ->handle($command);
+    }
 
-        $this->assertSame($handler, $result);
+    /**
+     * @test
+     */
+    public function itReturnsHandlerResult()
+    {
+        $handler = \Phake::mock(HandlerInterface::class);
+        $command = \Phake::mock(CommandInterface::class);
+
+        \Phake::when($this->handlerResolver)
+            ->resolveCommandHandler($command)
+            ->thenReturn($handler);
+
+        \Phake::when($handler)
+            ->handle($command)
+            ->thenReturn(['foo' => 'bar']);
+
+        $result = $this->commandBus->execute($command);
+
+        $this->assertSame(['foo' => 'bar'], $result);
     }
 
     /**
@@ -74,19 +93,23 @@ class LoggingHandlerResolverTest extends TestCase
         $command = new FooCommand();
         $handler = new FooHandler();
 
-        \Phake::when($this->decoratedResolver)
+        $command->setContext(['some' => 'context']);
+
+        \Phake::when($this->handlerResolver)
             ->resolveCommandHandler($command)
             ->thenReturn($handler);
 
-        $this->resolver->resolveCommandHandler($command);
+        $this->commandBus->execute($command);
 
         \Phake::verify($this->logger)
-            ->info(\Phake::capture($message));
+            ->info(\Phake::capture($message), \Phake::capture($context));
 
         $this->assertSame(
             'Handling command "mohmann\Hexagonal\Tests\Command\Fixtures\FooCommand" ' .
             'with "mohmann\Hexagonal\Tests\Handler\Fixtures\FooHandler"',
             $message
         );
+
+        $this->assertSame(['command_context' => ['some' => 'context']], $context);
     }
 }

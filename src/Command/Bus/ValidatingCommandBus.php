@@ -10,8 +10,8 @@
 
 namespace mohmann\Hexagonal\Command\Bus;
 
-use mohmann\Hexagonal\CommandInterface;
 use mohmann\Hexagonal\Command\CommandBusInterface;
+use mohmann\Hexagonal\CommandInterface;
 use mohmann\Hexagonal\Exception\HexagonalException;
 use mohmann\Hexagonal\Validator\ValidatorResolverInterface;
 

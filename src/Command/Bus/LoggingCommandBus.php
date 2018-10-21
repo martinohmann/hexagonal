@@ -8,14 +8,14 @@
  * file that was distributed with this source code.
  */
 
-namespace mohmann\Hexagonal\Handler\Resolver;
+namespace mohmann\Hexagonal\Command\Bus;
 
+use mohmann\Hexagonal\Command\CommandBusInterface;
 use mohmann\Hexagonal\CommandInterface;
 use mohmann\Hexagonal\Handler\HandlerResolverInterface;
-use mohmann\Hexagonal\HandlerInterface;
 use Psr\Log\LoggerInterface;
 
-class LoggingHandlerResolver implements HandlerResolverInterface
+class LoggingCommandBus implements CommandBusInterface
 {
     /**
      * @var HandlerResolverInterface
@@ -40,7 +40,7 @@ class LoggingHandlerResolver implements HandlerResolverInterface
     /**
      * {@inheritDoc}
      */
-    public function resolveCommandHandler(CommandInterface $command): HandlerInterface
+    public function execute(CommandInterface $command)
     {
         $handler = $this->handlerResolver->resolveCommandHandler($command);
 
@@ -49,9 +49,10 @@ class LoggingHandlerResolver implements HandlerResolverInterface
                 'Handling command "%s" with "%s"',
                 \get_class($command),
                 \get_class($handler)
-            )
+            ),
+            ['command_context' => $command->getContext()]
         );
 
-        return $handler;
+        return $handler->handle($command);
     }
 }
