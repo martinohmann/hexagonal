@@ -12,15 +12,14 @@ namespace mohmann\Hexagonal\Command;
 
 use mohmann\Hexagonal\CommandInterface;
 use mohmann\Hexagonal\Exception\HexagonalException;
-use mohmann\Hexagonal\Handler\HandlerResolverInterface;
 use mohmann\Hexagonal\Validator\ValidatorResolverInterface;
 
 class ValidatingCommandBus implements CommandBusInterface
 {
     /**
-     * @var HandlerResolverInterface
+     * @var CommandBusInterface
      */
-    private $handlerResolver;
+    private $commandBus;
 
     /**
      * @var ValidatorResolverInterface
@@ -28,14 +27,14 @@ class ValidatingCommandBus implements CommandBusInterface
     private $validatorResolver;
 
     /**
-     * @param HandlerResolverInterface $handlerResolver
+     * @param CommandBusInterface $commandBus
      * @param ValidatorResolverInterface $validatorResolver
      */
     public function __construct(
-        HandlerResolverInterface $handlerResolver,
+        CommandBusInterface $commandBus,
         ValidatorResolverInterface $validatorResolver
     ) {
-        $this->handlerResolver = $handlerResolver;
+        $this->commandBus = $commandBus;
         $this->validatorResolver = $validatorResolver;
     }
 
@@ -46,9 +45,7 @@ class ValidatingCommandBus implements CommandBusInterface
     {
         $this->validate($command);
 
-        $handler = $this->handlerResolver->resolveCommandHandler($command);
-
-        return $handler->handle($command);
+        return $this->commandBus->execute($command);
     }
 
     /**
