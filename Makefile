@@ -1,12 +1,5 @@
 .DEFAULT_GOAL := help
 
-ifeq ($(COMPOSER_HOME),)
-	export COMPOSER_HOME=~/.composer
-endif
-
-# Mute all `make` specific output. Comment this out to get some debug information.
-#.SILENT:
-
 .PHONY: help
 help:
 	@grep -E '^[a-zA-Z-]+:.*?## .*$$' Makefile | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "[32m%-12s[0m %s\n", $$1, $$2}'
