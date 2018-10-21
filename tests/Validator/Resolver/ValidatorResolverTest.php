@@ -8,28 +8,28 @@
  * file that was distributed with this source code.
  */
 
-namespace mohmann\Hexagonal\Tests\Validator;
+namespace mohmann\Hexagonal\Tests\Validator\Resolver;
 
 use mohmann\Hexagonal\CommandInterface;
 use mohmann\Hexagonal\Exception\InvalidValidatorClassException;
 use mohmann\Hexagonal\Exception\MissingCommandValidatorException;
-use mohmann\Hexagonal\Validator\ValidatorRegistry;
+use mohmann\Hexagonal\Validator\Resolver\ValidatorResolver;
 use mohmann\Hexagonal\ValidatorInterface;
 use PHPUnit\Framework\TestCase;
 
-class ValidatorRegistryTest extends TestCase
+class ValidatorResolverTest extends TestCase
 {
     /**
-     * @var ValidatorRegistry
+     * @var ValidatorResolver
      */
-    private $registry;
+    private $resolver;
 
     /**
      * @return void
      */
     public function setUp()
     {
-        $this->registry = new ValidatorRegistry();
+        $this->resolver = new ValidatorResolver();
     }
 
     /**
@@ -40,9 +40,9 @@ class ValidatorRegistryTest extends TestCase
         $validator = \Phake::mock(ValidatorInterface::class);
         $command = \Phake::mock(CommandInterface::class);
 
-        $this->registry->registerCommandValidator(\get_class($command), $validator);
+        $this->resolver->registerCommandValidator(\get_class($command), $validator);
 
-        $this->assertSame($validator, $this->registry->getCommandValidator($command));
+        $this->assertSame($validator, $this->resolver->resolveCommandValidator($command));
     }
 
     /**
@@ -55,7 +55,7 @@ class ValidatorRegistryTest extends TestCase
             'Some\Other\Command' => \Phake::mock(ValidatorInterface::class),
         ];
 
-        $registry = new ValidatorRegistry($input);
+        $registry = new ValidatorResolver($input);
 
         $validators = $registry->getCommandValidators();
 
@@ -72,9 +72,9 @@ class ValidatorRegistryTest extends TestCase
             'Some\Other\Command' => \Phake::mock(ValidatorInterface::class),
         ];
 
-        $this->registry->registerCommandValidators($input);
+        $this->resolver->registerCommandValidators($input);
 
-        $validators = $this->registry->getCommandValidators();
+        $validators = $this->resolver->getCommandValidators();
 
         $this->assertSame($input, $validators);
     }
@@ -87,7 +87,7 @@ class ValidatorRegistryTest extends TestCase
         $command = \Phake::mock(CommandInterface::class);
 
         $this->expectException(MissingCommandValidatorException::class);
-        $this->registry->getCommandValidator($command);
+        $this->resolver->resolveCommandValidator($command);
     }
 
     /**
@@ -101,6 +101,6 @@ class ValidatorRegistryTest extends TestCase
         ];
 
         $this->expectException(InvalidValidatorClassException::class);
-        $this->registry->registerCommandValidators($validators);
+        $this->resolver->registerCommandValidators($validators);
     }
 }

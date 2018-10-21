@@ -8,14 +8,15 @@
  * file that was distributed with this source code.
  */
 
-namespace mohmann\Hexagonal\Validator;
+namespace mohmann\Hexagonal\Validator\Resolver;
 
 use mohmann\Hexagonal\CommandInterface;
 use mohmann\Hexagonal\Exception\InvalidValidatorClassException;
 use mohmann\Hexagonal\Exception\MissingCommandValidatorException;
 use mohmann\Hexagonal\ValidatorInterface;
+use mohmann\Hexagonal\Validator\ValidatorResolverInterface;
 
-class ValidatorRegistry
+class ValidatorResolver implements ValidatorResolverInterface
 {
     /**
      * @var ValidatorInterface[]
@@ -31,21 +32,9 @@ class ValidatorRegistry
     }
 
     /**
-     * @param string $commandClass
-     * @param ValidatorInterface $validator
-     * @return void
+     * {@inheritDoc}
      */
-    public function registerCommandValidator(string $commandClass, ValidatorInterface $validator)
-    {
-        $this->validators[$commandClass] = $validator;
-    }
-
-    /**
-     * @param CommandInterface $command
-     * @throws MissingCommandValidatorException
-     * @return ValidatorInterface
-     */
-    public function getCommandValidator(CommandInterface $command): ValidatorInterface
+    public function resolveCommandValidator(CommandInterface $command): ValidatorInterface
     {
         $commandClass = \get_class($command);
 
@@ -62,6 +51,16 @@ class ValidatorRegistry
     public function getCommandValidators(): array
     {
         return $this->validators;
+    }
+
+    /**
+     * @param string $commandClass
+     * @param ValidatorInterface $validator
+     * @return void
+     */
+    public function registerCommandValidator(string $commandClass, ValidatorInterface $validator)
+    {
+        $this->validators[$commandClass] = $validator;
     }
 
     /**
